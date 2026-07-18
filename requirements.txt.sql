@@ -1,0 +1,10 @@
+bcrypt==5.0.0
+email_validator==2.2.0
+Flask==3.1.3
+Flask-Login==0.6.3
+Flask-Migrate==4.1.0
+Flask-SQLAlchemy==3.1.1
+Flask-WTF==1.3.0
+gunicorn==21.2.0
+SQLAlchemy==2.0.51
+WTForms==3.2.1
