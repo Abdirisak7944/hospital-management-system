@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block page_title %}Add Doctor{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h3 class="card-title" style="margin-bottom: 25px;">
+        <i class="fas fa-user-md" style="color: #28a745;"></i> Add New Doctor
+    </h3>
+    
+    <form method="POST" action="{{ url_for('main.add_doctor') }}">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="name">
+                    <i class="fas fa-user"></i> {{ form.name.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.name(class="form-control", placeholder="Enter doctor's full name") }}
+                {% if form.name.errors %}
+                    <div class="form-error">
+                        {% for error in form.name.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="specialization">
+                    <i class="fas fa-stethoscope"></i> {{ form.specialization.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.specialization(class="form-control") }}
+                {% if form.specialization.errors %}
+                    <div class="form-error">
+                        {% for error in form.specialization.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="phone">
+                    <i class="fas fa-phone"></i> {{ form.phone.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.phone(class="form-control", placeholder="Enter phone number") }}
+                {% if form.phone.errors %}
+                    <div class="form-error">
+                        {% for error in form.phone.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope"></i> {{ form.email.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.email(class="form-control", placeholder="Enter email address") }}
+                {% if form.email.errors %}
+                    <div class="form-error">
+                        {% for error in form.email.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            {{ form.submit(class="btn btn-success", style="padding: 12px 40px; font-size: 16px;") }}
+            <a href="{{ url_for('main.doctors') }}" class="btn btn-secondary" style="padding: 12px 30px; font-size: 16px;">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

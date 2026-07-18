@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block page_title %}Profile{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h3 class="card-title">
+        <i class="fas fa-user-circle" style="color: #0066cc;"></i> My Profile
+    </h3>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+        <div>
+            <p><strong><i class="fas fa-user"></i> Username:</strong> {{ user.username }}</p>
+            <p><strong><i class="fas fa-envelope"></i> Email:</strong> {{ user.email }}</p>
+            <p><strong><i class="fas fa-user-tag"></i> Role:</strong> 
+                <span style="background: #0066cc; color: white; padding: 3px 12px; border-radius: 20px; font-size: 12px;">
+                    {{ user.role }}
+                </span>
+            </p>
+            <p><strong><i class="fas fa-calendar-alt"></i> Joined:</strong> {{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+        </div>
+        <div style="text-align: center; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <i class="fas fa-user-circle" style="font-size: 80px; color: #0066cc;"></i>
+            <h4 style="margin-top: 10px;">{{ user.username }}</h4>
+            <p style="color: #888;">{{ user.role|capitalize }}</p>
+        </div>
+    </div>
+    
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #f0f0f0;">
+        <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="btn btn-danger" style="margin-left: 10px;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+</div>
+{% endblock %}
