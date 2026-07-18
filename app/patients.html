@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block page_title %}Patients List{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 class="card-title" style="margin: 0;">
+            <i class="fas fa-users" style="color: #0066cc;"></i> Patients List
+        </h3>
+        <a href="{{ url_for('main.add_patient') }}" class="btn btn-success">
+            <i class="fas fa-user-plus"></i> Add New Patient
+        </a>
+    </div>
+    
+    <!-- Search Bar -->
+    <div style="margin-bottom: 25px;">
+        <form method="GET" action="{{ url_for('main.patients') }}" style="display: flex; gap: 10px;">
+            <div style="flex: 1; position: relative;">
+                <i class="fas fa-search" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #aaa;"></i>
+                <input type="text" name="search" placeholder="Search by name, phone, or address..." 
+                       value="{{ search_query }}" 
+                       style="width: 100%; padding: 12px 15px 12px 45px; border: 2px solid #e9ecef; border-radius: 8px; font-size: 14px; transition: all 0.3s ease;">
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Search
+            </button>
+            {% if search_query %}
+                <a href="{{ url_for('main.patients') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Clear
+                </a>
+            {% endif %}
+        </form>
+    </div>
+    
+    <!-- Results Info -->
+    {% if search_query %}
+        <p style="color: #888; margin-bottom: 15px;">
+            <i class="fas fa-info-circle"></i> Search results for: "<strong>{{ search_query }}</strong>" 
+            ({{ patients|length }} found)
+        </p>
+    {% endif %}
+    
+    <!-- Patients Table -->
+    {% if patients %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><i class="fas fa-user"></i> Name</th>
+                        <th><i class="fas fa-calendar-alt"></i> Age</th>
+                        <th><i class="fas fa-venus-mars"></i> Gender</th>
+                        <th><i class="fas fa-phone"></i> Phone</th>
+                        <th><i class="fas fa-map-marker-alt"></i> Address</th>
+                        <th style="text-align: center;"><i class="fas fa-cog"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for patient in patients %}
+                    <tr>
+                        <td>{{ patient.id }}</td>
+                        <td><strong>{{ patient.name }}</strong></td>
+                        <td>{{ patient.age }}</td>
+                        <td>
+                            {% if patient.gender == 'Male' %}
+                                <span style="background: #0066cc; color: white; padding: 3px 10px; border-radius: 20px; font-size: 12px;">
+                                    <i class="fas fa-male"></i> Male
+                                </span>
+                            {% elif patient.gender == 'Female' %}
+                                <span style="background: #dc3545; color: white; padding: 3px 10px; border-radius: 20px; font-size: 12px;">
+                                    <i class="fas fa-female"></i> Female
+                                </span>
+                            {% else %}
+                                <span style="background: #6c757d; color: white; padding: 3px 10px; border-radius: 20px; font-size: 12px;">
+                                    {{ patient.gender }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>{{ patient.phone }}</td>
+                        <td>{{ patient.address or '-' }}</td>
+                        <td style="text-align: center;">
+                            <a href="{{ url_for('main.edit_patient', id=patient.id) }}" class="btn btn-warning btn-sm" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ url_for('main.delete_patient', id=patient.id) }}" method="POST" style="display: inline;">
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete {{ patient.name }}?')" class="btn btn-danger btn-sm" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+            <span style="color: #666;">
+                <i class="fas fa-database"></i> Total: <strong>{{ patients|length }}</strong> patients
+            </span>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 60px 20px;">
+            <i class="fas fa-users" style="font-size: 64px; color: #ddd;"></i>
+            <h3 style="color: #888; margin-top: 20px;">No patients found</h3>
+            {% if search_query %}
+                <p style="color: #aaa;">Try searching with different keywords.</p>
+            {% else %}
+                <p style="color: #aaa;">Click the button below to add your first patient.</p>
+                <a href="{{ url_for('main.add_patient') }}" class="btn btn-success" style="margin-top: 15px;">
+                    <i class="fas fa-user-plus"></i> Add First Patient
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="so">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🏥 Hospital</h2>
+                <p>Management System</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+    {% if current_user.is_authenticated %}
+        <a href="{{ url_for('main.dashboard') }}" class="nav-item {% if request.endpoint == 'main.dashboard' %}active{% endif %}">
+            <i class="fas fa-chart-pie"></i> <span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('main.patients') }}" class="nav-item {% if request.endpoint == 'main.patients' %}active{% endif %}">
+            <i class="fas fa-users"></i> <span>Patients</span>
+        </a>
+        <a href="{{ url_for('main.add_patient') }}" class="nav-item {% if request.endpoint == 'main.add_patient' %}active{% endif %}">
+            <i class="fas fa-user-plus"></i> <span>Add Patient</span>
+        </a>
+        <a href="{{ url_for('main.doctors') }}" class="nav-item {% if request.endpoint == 'main.doctors' %}active{% endif %}">
+            <i class="fas fa-user-md"></i> <span>Doctors</span>
+        </a>
+        <a href="{{ url_for('main.appointments') }}" class="nav-item {% if request.endpoint == 'main.appointments' %}active{% endif %}">
+            <i class="fas fa-calendar-check"></i> <span>Appointments</span>
+        </a>
+        <a href="{{ url_for('main.profile') }}" class="nav-item {% if request.endpoint == 'main.profile' %}active{% endif %}">
+            <i class="fas fa-user-circle"></i> <span>Profile</span>
+        </a>
+        <a href="{{ url_for('main.logout') }}" class="nav-item" style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 10px; padding-top: 15px;">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+        </a>
+    {% else %}
+        <a href="{{ url_for('main.login') }}" class="nav-item active">
+            <i class="fas fa-sign-in-alt"></i> <span>Login</span>
+        </a>
+    {% endif %}
+</nav>
+    <div class="sidebar-footer">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>{{ current_user.username if current_user.is_authenticated else 'Guest' }}</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <header class="top-bar">
+                <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                <div class="top-bar-right">
+                    <span class="welcome-text">Welcome, {{ current_user.username if current_user.is_authenticated else 'Guest' }}</span>
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-cog"></i>
+                </div>
+            </header>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript for showing/hiding register form -->
+    <script>
+        function showRegister() {
+            // This function will be called from login page
+            // It will show the register form
+            var registerForm = document.getElementById('register-form');
+            var loginForm = document.getElementById('login-form');
+            if (registerForm && loginForm) {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            } else {
+                // If we're not on login page, redirect to login page with register param
+                window.location.href = "{{ url_for('main.login') }}?show=register";
+            }
+        }
+        
+        function showLogin() {
+            var registerForm = document.getElementById('register-form');
+            var loginForm = document.getElementById('login-form');
+            if (registerForm && loginForm) {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            }
+        }
+        
+        // Check if URL has show=register parameter
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('show') === 'register') {
+                showRegister();
+            }
+        }
+    </script>
+</body>
+</html>

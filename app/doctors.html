@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block page_title %}Doctors{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 class="card-title" style="margin: 0;">
+            <i class="fas fa-user-md" style="color: #28a745;"></i> Doctors List
+        </h3>
+        <a href="{{ url_for('main.add_doctor') }}" class="btn btn-success">
+            <i class="fas fa-user-plus"></i> Add Doctor
+        </a>
+    </div>
+    
+    {% if doctors %}
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th><i class="fas fa-user"></i> Name</th>
+                        <th><i class="fas fa-stethoscope"></i> Specialization</th>
+                        <th><i class="fas fa-phone"></i> Phone</th>
+                        <th><i class="fas fa-envelope"></i> Email</th>
+                        <th style="text-align: center;"><i class="fas fa-cog"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor.id }}</td>
+                        <td><strong>Dr. {{ doctor.name }}</strong></td>
+                        <td>
+                            <span style="background: #28a745; color: white; padding: 3px 12px; border-radius: 20px; font-size: 12px;">
+                                {{ doctor.specialization }}
+                            </span>
+                        </td>
+                        <td>{{ doctor.phone }}</td>
+                        <td>{{ doctor.email }}</td>
+                        <td style="text-align: center;">
+                            <a href="{{ url_for('main.edit_doctor', id=doctor.id) }}" class="btn btn-warning btn-sm" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form action="{{ url_for('main.delete_doctor', id=doctor.id) }}" method="POST" style="display: inline;">
+                                <button type="submit" onclick="return confirm('Are you sure you want to delete Dr. {{ doctor.name }}?')" class="btn btn-danger btn-sm" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+            <span style="color: #666;">
+                <i class="fas fa-database"></i> Total: <strong>{{ doctors|length }}</strong> doctors
+            </span>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 60px 20px;">
+            <i class="fas fa-user-md" style="font-size: 64px; color: #ddd;"></i>
+            <h3 style="color: #888; margin-top: 20px;">No doctors found</h3>
+            <p style="color: #aaa;">Click the button below to add your first doctor.</p>
+            <a href="{{ url_for('main.add_doctor') }}" class="btn btn-success" style="margin-top: 15px;">
+                <i class="fas fa-user-plus"></i> Add First Doctor
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

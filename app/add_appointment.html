@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block page_title %}Add Appointment{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h3 class="card-title" style="margin-bottom: 25px;">
+        <i class="fas fa-calendar-plus" style="color: #ffc107;"></i> Schedule New Appointment
+    </h3>
+    
+    <form method="POST" action="{{ url_for('main.add_appointment') }}">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="patient_id">
+                    <i class="fas fa-user"></i> {{ form.patient_id.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.patient_id(class="form-control") }}
+                {% if form.patient_id.errors %}
+                    <div class="form-error">
+                        {% for error in form.patient_id.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="doctor_id">
+                    <i class="fas fa-user-md"></i> {{ form.doctor_id.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.doctor_id(class="form-control") }}
+                {% if form.doctor_id.errors %}
+                    <div class="form-error">
+                        {% for error in form.doctor_id.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="form-group">
+                <label for="date">
+                    <i class="fas fa-calendar-day"></i> {{ form.date.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.date(class="form-control", type="date") }}
+                {% if form.date.errors %}
+                    <div class="form-error">
+                        {% for error in form.date.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="time">
+                    <i class="fas fa-clock"></i> {{ form.time.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.time(class="form-control", type="time") }}
+                {% if form.time.errors %}
+                    <div class="form-error">
+                        {% for error in form.time.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="status">
+                    <i class="fas fa-info-circle"></i> {{ form.status.label }}
+                </label>
+                {{ form.status(class="form-control") }}
+                {% if form.status.errors %}
+                    <div class="form-error">
+                        {% for error in form.status.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            {{ form.submit(class="btn btn-success", style="padding: 12px 40px; font-size: 16px;") }}
+            <a href="{{ url_for('main.appointments') }}" class="btn btn-secondary" style="padding: 12px 30px; font-size: 16px;">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

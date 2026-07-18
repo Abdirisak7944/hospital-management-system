@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block page_title %}Add New Patient{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h3 class="card-title" style="margin-bottom: 25px;">
+        <i class="fas fa-user-plus" style="color: #0066cc;"></i> Add New Patient
+    </h3>
+    
+    <form method="POST" action="{{ url_for('main.add_patient') }}">
+        {{ form.hidden_tag() }}
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="name">
+                    <i class="fas fa-user"></i> {{ form.name.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.name(class="form-control", placeholder="Enter full name", size=50) }}
+                {% if form.name.errors %}
+                    <div class="form-error">
+                        {% for error in form.name.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <small class="form-text">Letters and spaces only (no numbers)</small>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="age">
+                    <i class="fas fa-calendar-alt"></i> {{ form.age.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.age(class="form-control", placeholder="Enter age", size=10) }}
+                {% if form.age.errors %}
+                    <div class="form-error">
+                        {% for error in form.age.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="gender">
+                    <i class="fas fa-venus-mars"></i> {{ form.gender.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.gender(class="form-control") }}
+                {% if form.gender.errors %}
+                    <div class="form-error">
+                        {% for error in form.gender.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="phone">
+                    <i class="fas fa-phone"></i> {{ form.phone.label }}
+                    <span class="required">*</span>
+                </label>
+                {{ form.phone(class="form-control", placeholder="Enter phone number", size=30) }}
+                {% if form.phone.errors %}
+                    <div class="form-error">
+                        {% for error in form.phone.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="address">
+                    <i class="fas fa-map-marker-alt"></i> {{ form.address.label }}
+                </label>
+                {{ form.address(class="form-control", rows=4, placeholder="Enter address", cols=50) }}
+                {% if form.address.errors %}
+                    <div class="form-error">
+                        {% for error in form.address.errors %}
+                            <span><i class="fas fa-exclamation-circle"></i> {{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            {{ form.submit(class="btn btn-success", style="padding: 12px 40px; font-size: 16px;") }}
+            <a href="{{ url_for('main.patients') }}" class="btn btn-secondary" style="padding: 12px 30px; font-size: 16px;">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
